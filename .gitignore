@@ -1,0 +1,9 @@
+build/
+build-standard/
+.DS_Store
+captures/
+Camera/
+live/mac_basic/
+tmp/
+*.fits
+*.raw12p
