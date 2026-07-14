@@ -31,6 +31,17 @@ target_link_libraries(imgui-sdl2 PUBLIC PkgConfig::SDL2)
 add_executable(genicam-live tools/genicam_live.cpp)
 target_link_libraries(genicam-live PRIVATE PkgConfig::ARAVIS imgui-sdl2)
 
+if(APPLE)
+  add_executable(genicam-live-app MACOSX_BUNDLE tools/genicam_live.cpp)
+  target_link_libraries(genicam-live-app PRIVATE PkgConfig::ARAVIS imgui-sdl2)
+  set_target_properties(genicam-live-app PROPERTIES
+    OUTPUT_NAME "GenICam Live"
+    MACOSX_BUNDLE_BUNDLE_NAME "GenICam Live"
+    MACOSX_BUNDLE_GUI_IDENTIFIER "com.jiangxixin.genicam.live"
+    MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}"
+    MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}")
+endif()
+
 add_library(genicam-driver
   src/genicam_camera.cpp
   src/fits_writer.cpp)

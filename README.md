@@ -29,24 +29,35 @@ Build the live viewer once:
 
 ```sh
 cmake -S . -B build-standard
-cmake --build build-standard --target genicam-live -j4
+cmake --build build-standard --target genicam-live-app -j4
 ```
 
-Then run the executable directly:
+Then open the macOS app bundle:
 
 ```sh
-./build-standard/genicam-live 192.168.9.104 10000
+open "build-standard/GenICam Live.app"
 ```
 
-Arguments are camera address and initial exposure in microseconds. The live
-window uses Dear ImGui controls for exposure and digital zoom. Press `q` or
-`Esc` to stop.
+The app opens a camera picker; choose the GenICam device from the dropdown and
+click `Connect`. For debugging, optional command-line arguments can still set
+the camera address and initial exposure in microseconds. Optional third and
+fourth arguments set a centered hardware ROI:
+
+```sh
+cmake --build build-standard --target genicam-live -j4
+./build-standard/genicam-live 192.168.9.104 10000 640 480
+```
+
+The live window uses Dear ImGui controls for exposure, gain and digital zoom,
+plus a center crosshair, 2x focus ROI, histogram and focus score. Drag a box on
+the image to select a hardware ROI; use `Reset ROI` to return to the full
+sensor. Press `q` or `Esc` to stop.
 
 ## Build manually
 
 ```sh
 cmake -S . -B build-standard
-cmake --build build-standard --target genicam-live -j4
+cmake --build build-standard --target genicam-live-app genicam-live -j4
 ```
 
 ## Astronomy RAW12 capture
