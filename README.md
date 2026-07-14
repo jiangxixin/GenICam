@@ -8,7 +8,7 @@ MindVision's SDK or `libmvsdk`.
 
 - Address: `192.168.9.104` (persistent), host: `192.168.9.100/24`
 - Model: `GEC501M`, serial `058130110308`, firmware `V1.0.90-2.0.11`
-- Video: `2640 x 1968`, Mono8 or Mono12 Packed
+- Video: `2640 x 1978`, Mono8 or Mono12 Packed
 - Sensor mode: IMX269 2 x 2, effective 6.6 um pixels
 - Exposure: 11 us to 5.7672 s in the factory firmware
 - Transport: GigE Vision GVCP/GVSP, 1 Gbit/s, packet size 1400 bytes
@@ -20,20 +20,27 @@ address directly. Its device-provided GenICam description is saved as
 ## Dependencies
 
 ```sh
-brew install aravis ffmpeg
+brew install aravis sdl2
 ```
 
 ## Live focus view
 
-The script compiles only when the executable is missing. Later launches open
-the video immediately:
+Build the live viewer once:
 
 ```sh
-./scripts/genicam_live.sh 2000
+cmake -S . -B build-standard
+cmake --build build-standard --target genicam-live -j4
 ```
 
-The argument is exposure in microseconds. Close the ffplay window or press `q`
-to stop.
+Then run the executable directly:
+
+```sh
+./build-standard/genicam-live 192.168.9.104 10000
+```
+
+Arguments are camera address and initial exposure in microseconds. The live
+window uses Dear ImGui controls for exposure and digital zoom. Press `q` or
+`Esc` to stop.
 
 ## Build manually
 

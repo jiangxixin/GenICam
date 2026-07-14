@@ -1,6 +1,7 @@
 build/
 build-standard/
 .DS_Store
+imgui.ini
 captures/
 Camera/
 live/mac_basic/

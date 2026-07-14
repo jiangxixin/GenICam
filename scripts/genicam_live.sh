@@ -10,18 +10,15 @@ if ! command -v pkg-config >/dev/null || ! pkg-config --exists aravis-0.8; then
   echo "Aravis is required: brew install aravis" >&2
   exit 1
 fi
-if ! command -v ffplay >/dev/null; then
-  echo "ffplay is required: brew install ffmpeg" >&2
+if ! pkg-config --exists sdl2; then
+  echo "SDL2 is required: brew install sdl2" >&2
   exit 1
 fi
 
-if [[ ! -x "$BUILD/genicam-live" ]]; then
+if [[ ! -f "$BUILD/CMakeCache.txt" ]]; then
   cmake -S "$ROOT" -B "$BUILD"
-  cmake --build "$BUILD" --target genicam-live -j4
 fi
+cmake --build "$BUILD" --target genicam-live -j4
 
 echo "Opening $CAMERA_IP using GigE Vision/GenICam (exposure ${EXPOSURE_US} us)"
-"$BUILD/genicam-live" "$CAMERA_IP" "$EXPOSURE_US" |
-  ffplay -hide_banner -loglevel warning \
-    -f rawvideo -pixel_format gray -video_size 2640x1968 -framerate 14 \
-    -window_title "GenICam Live - Focus" -
+"$BUILD/genicam-live" "$CAMERA_IP" "$EXPOSURE_US"
